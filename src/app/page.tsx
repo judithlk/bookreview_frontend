@@ -1,101 +1,165 @@
+import Link from "next/link";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import { FaTags, FaArrowTrendUp, FaRegClock } from "react-icons/fa6";
+import { FaFireAlt, FaFire } from "react-icons/fa";
+import { IoHeart, IoHeartDislike } from "react-icons/io5";
+import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
+import { Button } from "@/components/ui/button";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function Landing() {
+  const number = [1, 2, 3, 4, 5];
+
+  return (
+    <>
+      <main className="relative md:flex lg:w-[90%] m-auto justify-between md:p-5 md:px-8">
+        <div className="space-y-12 md:w-[72%] lg:w-[72%] p-5 md:px-8 ">
+          <div className="space-y-4 w-full overflow-hidden p-5 hover:bg-gray-300 hover:bg-opacity-25">
+            <div className="flex space-x-2 items-center p-2 rounded-sm">
+              <FaFire className="size-8 fill-white" />
+              <h1 className="text-[1.6rem] text-white">Trending Books</h1>
+            </div>
+            <div className="grid grid-flow-col auto-cols-[minmax(120px,_1fr)] sm:auto-cols-[minmax(180px,_1fr)] gap-4 overflow-x-auto no-scrollbar scroll-smooth">
+              {number.map((item, index) => (
+                <Link href="#" key={index}>
+                  <div className="relative bg-gray-50 p-1 group hover:bg-gray-800 transition duration-300 ease-in-out">
+                    <div className="relative">
+                      <div className="relative text-center w-full h-[150px] sm:h-[200px]">
+                        <Image
+                          src="/bookcover.jfif"
+                          alt=""
+                          fill
+                          // sizes=""
+                          // objectFit="cover"
+                          className="m-auto object-cover"
+                        />
+                      </div>
+                      <div className="absolute inset-0 bg-gray-950 opacity-0 group-hover:opacity-90 transition duration-300 ease-in-out"></div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out text-white p-2">
+                        <div className="space-y-3">
+                          <h1 className="font-serif text-xl">
+                            The Picture of Dorian Gray
+                          </h1>
+                          <h2>Oscar Wilde</h2>
+                          <h2 className="italic">300 reviews</h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <hr />
+          <div className="space-y-4">
+            <div className="flex space-x-2 items-center p-2 rounded-sm">
+              <FaRegClock className="size-8 fill-white" />
+              <h1 className="text-[1.6rem] text-white">Latest Reviews</h1>
+            </div>
+            <div className="md:flex justify-between bg-gray-100 p-6 md:p-4 space-y-5">
+              <div className="w-[65%] md:w-[25%]">
+                <div className="relative text-center w-full h-[180px] sm:h-[250px]">
+                  <Image
+                    src="/bookcover.jfif"
+                    alt=""
+                    // layout="fill"
+                    // sizes=""
+                    // objectFit="cover"
+                    fill
+                    className="m-auto object-cover"
+                  />
+                </div>
+              </div>
+              <div className="md:w-[70%] space-y-4">
+                <div>
+                  <h1 className="font-serif text-xl font-semibold">
+                    Dorian Gray
+                  </h1>
+                  <h2>Uploaded two weeks ago</h2>
+                </div>
+                <hr />
+                <div className="space-y-3">
+                  <h2>
+                    "The most amazing book I have read this year!"{" "}
+                    <i>- Anonymous reviewer</i>
+                  </h2>
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-semibold">02 Sept, 2024</h3>
+                    <div className="flex space-x-3 items-center">
+                      <Button variant="ghost" className="w-fit p-1">
+                        <BiSolidUpvote className="size-6 fill-green-300 hover:fill-green-600 cursor-pointer" />{" "}
+                        Yay{" "}
+                      </Button>
+                      <Button variant="ghost" className="w-fit p-1">
+                        <BiSolidDownvote className="size-6 fill-red-300 hover:fill-red-600 cursor-pointer" />
+                        Nay
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div className="space-y-3">
+                  <h2>
+                    "The most amazing book I have read this year!"{" "}
+                    <i>- Anonymous reviewer</i>
+                  </h2>
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-semibold">02 Sept, 2024</h3>
+                    <div className="flex space-x-3 items-center">
+                      <Button variant="ghost" className="w-fit p-1">
+                        <BiSolidUpvote className="size-6 fill-green-300 hover:fill-green-600 cursor-pointer" />{" "}
+                        Yay{" "}
+                      </Button>
+                      <Button variant="ghost" className="w-fit p-1">
+                        <BiSolidDownvote className="size-6 fill-red-300 hover:fill-red-600 cursor-pointer" />
+                        Nay
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <Link href="#">
+                  <h2>More reviews</h2>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="md:w-[28%] lg:w-[25%] p-5 space-y-16">
+          <div className="border border-gray-300 p-5 rounded-lg bg-white">
+            <div className="flex space-x-2 items-center">
+              <FaTags className="size-7" />
+              <h1 className="text-[1.2rem">Browse by Genre</h1>
+            </div>
+            <div className="pl-10">
+              <ol className="list-disc">
+                {number.map((item, index) => (
+                  <Link href="#" key={index}>
+                    <li className="text-lg">Romance</li>
+                  </Link>
+                ))}
+              </ol>
+            </div>
+          </div>
+          <div className="border border-gray-300 p-5 rounded-lg bg-white">
+            <div className="flex space-x-2 items-center">
+              <FaTags className="size-7" />
+              <h1 className="text-[1.2rem">
+                Reading lists curated by members of the community.
+              </h1>
+            </div>
+            <div className="pl-10">
+              <ol className="list-disc">
+                {number.map((item, index) => (
+                  <Link href="#" key={index}>
+                    <li className="text-lg">Romance</li>
+                  </Link>
+                ))}
+              </ol>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }
