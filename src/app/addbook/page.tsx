@@ -46,7 +46,7 @@ export default function AddBook() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>, e: Event) {
+  async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
     e.preventDefault();
     try {
       const response = await addBook(values);
@@ -55,7 +55,7 @@ export default function AddBook() {
       } else if(response.message) {
         console.log(response.message)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to add book:", error);
     }
   }

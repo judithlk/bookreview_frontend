@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -46,9 +46,9 @@ export default function Signup() {
   async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
     e.preventDefault();
     try {
-      const response = await userRegistration(values);
+      await userRegistration(values);
       router.push('/signin');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to register user:", error);
     }
   }

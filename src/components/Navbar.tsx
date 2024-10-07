@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -7,8 +8,6 @@ import SubNavbar from "./SubNavbar";
 import {
   IoLibrarySharp,
   IoPerson,
-  IoInformationCircleOutline,
-  IoSearch,
 } from "react-icons/io5";
 import { MdRateReview } from "react-icons/md";
 
@@ -16,8 +15,19 @@ export default function Navbar() {
   const pathname = usePathname();
   const hideNavbar = pathname.startsWith("/signin");
 
-  const user = localStorage.getItem("userInfo");
-  const userJs = JSON.parse(user);
+  // const user: any = localStorage.getItem("userInfo");
+  const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useState<any>(null);
+  
+  useEffect(() => {
+    const data = typeof window !== "undefined" ? localStorage.getItem("userInfo") : false;
+    const dataToken = typeof window !== "undefined" ? localStorage.getItem("token") : false;
+    setUser(data);
+    setToken(dataToken);
+    console.log(user)
+  }, [])
+  
+  const userJs: any = JSON.parse(user);
 
   return (
     <div className={`${hideNavbar ? "hidden" : "block"} bg-[#5D8AA8]`}>

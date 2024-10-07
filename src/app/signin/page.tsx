@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,6 +23,8 @@ import { Input } from "@/components/ui/input";
 import { useLoginMutation } from "@/redux/services/auth.service";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/redux/features/auth/authSlice";
+
+import MoonLoader from "react-spinners/MoonLoader";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -108,11 +110,11 @@ export default function Login() {
                 )}
               />
               <div className="flex justify-end">
-              <Button type="submit">Login</Button>
+              {isLoading ? <Button type="submit" disabled><MoonLoader size={22} /></Button> : <Button type="submit">Login</Button>}
               </div>
             </form>
           </Form>
-          <h2 className="text-center text-base">Don't have an account? <Link href="/signin/new-user" className="hover:underline font-[500]">Sign up</Link> here</h2>
+          <h2 className="text-center text-base">Don&apos;t have an account? <Link href="/signin/new-user" className="hover:underline font-[500]">Sign up</Link> here</h2>
           </div>
         </div>
 

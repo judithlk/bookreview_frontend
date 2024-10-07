@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogContent,
+  // AlertDialogDescription,
+  // AlertDialogHeader,
+  // AlertDialogTitle,
+  // AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import withAuth from "@/components/auth/withAuth";
 
@@ -23,8 +23,8 @@ import { MdOutlineClose } from "react-icons/md";
 import moment from "moment";
 
 function MyProfile() {
-  const user = localStorage.getItem("userInfo");
-  const userJs = JSON.parse(user);
+  const user: any = localStorage.getItem("userInfo");
+  const userJs: any = JSON.parse(user);
 
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -41,8 +41,8 @@ function MyProfile() {
 
   return (
     <>
-      <Dialog open={isOpen}>
-        <DialogContent className="">
+      <AlertDialog open={isOpen}>
+        <AlertDialogContent className="">
           <div className="flex items-center justify-between p-0">
             <h1 className="text-lg">Review a book</h1>
             <Button
@@ -97,8 +97,8 @@ function MyProfile() {
               </div>
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <main className="relative md:w-[80%] m-auto p-5 px-8 bg-white">
         <div className="flex justify-between items-center py-5">

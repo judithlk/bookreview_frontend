@@ -40,7 +40,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function Product(
+export default function Book(
   // { params }: { params: { id: string } }
 ) {
   //   const [isOpen, setIsOpen] = useState(false);
@@ -51,8 +51,8 @@ export default function Product(
   const { data: bookData } = useGetBookByIdQuery(id);
   const { data: bookReviews, refetch } = useGetReviewsByBookQuery(id);
 
-  // const user = localStorage.getItem("userInfo");
-  // const userJs = JSON.parse(user);
+  // const user: any = localStorage.getItem("userInfo");
+  // const userJs: any =JSON.parse(user);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,7 +76,7 @@ export default function Product(
       //   title: "Success",
       //   description: "Successfully updated product",
       // });
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       // toast({
       //   title: "Error",
@@ -94,7 +94,7 @@ export default function Product(
   //         description: "Successfully deleted",
   //       })
   //       router.replace('/dashboard/products')
-  //     } catch (error) {
+  //     } catch (error: any) {
   //         console.log(error);
   //         toast({
   //             title: "Error",
@@ -139,7 +139,7 @@ export default function Product(
               ) : (
                 <></>
               )}
-              {bookReviews?.map((review: object) => (
+              {bookReviews?.map((review: any) => (
                 <div className="my-2 border-b pb-3" key={review._id}>
                   <div className="flex justify-between">
                     <div>

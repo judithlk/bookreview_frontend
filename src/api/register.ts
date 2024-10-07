@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-export default async function userRegistration(userData) {
+export default async function userRegistration(userData: any) {
     try {
       const formData = new FormData();
       formData.append("username", userData.username);
@@ -17,7 +17,7 @@ export default async function userRegistration(userData) {
       // Handle success
       console.log("Registration successful:", response.data);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       // Handle error
       console.error("Registration failed:", error.response ? error.response.data : error.message);
       throw error;

@@ -14,7 +14,7 @@ export const bookApi = createApi({
     //     try {
     //       const userObject = JSON.parse(userString);
     //       tenantId = userObject.tenantId || "";
-    //     } catch (error) {
+    //     } catch (error: any) {
     //       console.error("Error parsing user object:", error);
     //     }
     //   }

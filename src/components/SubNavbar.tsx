@@ -6,61 +6,62 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
+  // AlertDialogAction,
+  // AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+  // AlertDialogDescription,
+  // AlertDialogFooter,
+  // AlertDialogHeader,
+  // AlertDialogTitle,
+  // AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { useLazySearchBooksQuery } from "@/redux/services/books.service";
 
-import { FaTags, FaArrowTrendUp, FaRegClock } from "react-icons/fa6";
 import {
-  IoLibrarySharp,
-  IoPerson,
-  IoInformationCircleOutline,
   IoSearch,
 } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
 
 import MoonLoader from "react-spinners/MoonLoader";
 
-function debounce(func: Function, delay: number) {
+function debounce(
+  this: any, // Add this line to specify the type of `this`
+  func: (...args: any[]) => any,
+  delay: number
+) {
   let timeoutId: NodeJS.Timeout;
 
   return function (...args: any[]) {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
-    timeoutId = setTimeout(() => {
+    timeoutId = setTimeout(function(this: any) { // Also annotate here if needed
       func.apply(this, args);
     }, delay);
   };
 }
+
 export default function SubNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [itIsOpen, setItIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [getResults, getResultsState] = useLazySearchBooksQuery();
+  const [getResults, getResultsState]  = useLazySearchBooksQuery();
 
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<any[]>([]);
-  const [errMessage, setErrMessage] = useState<any>(null);
+  const [results, setResults] = useState<any>([]);
+  // const [errMessage, setErrMessage] = useState<any>(null);
 
   const fetchSearchResults = async (term: string) => {
       setIsLoading(true);
       try {
-        const response = await getResults(term);
+        const response: any = await getResults(term);
         // const data = await response.json();
         if (response) {
           setResults(response);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
       setIsLoading(false)

@@ -14,13 +14,13 @@ export default function AllBooks() {
   const { data: booksData } = useGetBooksQuery();
   const { data: genres } = useGetGenresQuery();
 
-  const [genreId, setGenreId] = useState<string>(null);
+  const [genreId, setGenreId] = useState<any>(null);
 
   const [listByGenre, setListByGenre] = useState<any[]>([]);
 
   useEffect(() => {
     if (booksData) {
-      const filteredBooks = booksData?.filter((book) => book.genre === genreId);
+      const filteredBooks = booksData?.filter((book: any) => book.genre === genreId);
       setListByGenre(filteredBooks);
     //   console.log(listByGenre.length);
     }
@@ -40,15 +40,15 @@ export default function AllBooks() {
       <main className="relative w-[98%] sm:w-[95%] m-auto space-y-8 p-5 px-2 sm:px-8 bg-white">
         <div className="flex flex-wrap items-center">
           <h1 className="m-1">Genres</h1>
-          {genres?.map((genre: object, x = 0) => (
+          {genres?.map((genre: any, x: number = 0) => (
             <div
               className={`${
                 colors[x++]
               } px-2 rounded-3xl m-1 capitalize flex space-x-1 items-center`}
               key={genre._id}
-              onClick={() => {
-                genreId === genre._id ? setGenreId(null) : setGenreId(genre._id);
-              }}
+              onClick={() => 
+                genreId === genre._id ? setGenreId(null) : setGenreId(genre._id)
+              }
             >
               <h2 className="">{genre.title}</h2>
               <IoIosClose

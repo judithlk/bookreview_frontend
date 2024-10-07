@@ -1,33 +1,39 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
-import { FaTags, FaArrowTrendUp, FaRegClock } from "react-icons/fa6";
-import { FaFireAlt, FaFire } from "react-icons/fa";
-import { IoHeart, IoHeartDislike } from "react-icons/io5";
+import { useGetBooksQuery } from "@/redux/services/books.service";
+import { useGetReviewsByBookQuery } from "@/redux/services/reviews.service";
+
+import { FaTags, FaRegClock } from "react-icons/fa6";
+import { FaFire } from "react-icons/fa";
 import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 
 export default function Landing() {
   const number = [1, 2, 3, 4, 5];
 
+  const {data: books} = useGetBooksQuery();
+
   return (
     <>
-      <main className="relative md:flex lg:w-[90%] m-auto justify-between md:p-5 md:px-8">
-        <div className="space-y-12 md:w-[72%] lg:w-[72%] p-5 md:px-8 ">
+      <main className="relative flex w-[90%] m-auto justify-between p-5 px-8">
+        <div className="space-y-12 p-5 md:px-8 w-full">
           <div className="space-y-4 w-full overflow-hidden p-5 hover:bg-gray-300 hover:bg-opacity-25">
             <div className="flex space-x-2 items-center p-2 rounded-sm">
               <FaFire className="size-8 fill-white" />
               <h1 className="text-[1.6rem] text-white">Trending Books</h1>
             </div>
-            <div className="grid grid-flow-col auto-cols-[minmax(120px,_1fr)] sm:auto-cols-[minmax(180px,_1fr)] gap-4 overflow-x-auto no-scrollbar scroll-smooth">
-              {number.map((item, index) => (
-                <Link href="#" key={index}>
+            <div className="grid grid-flow-col auto-cols-[minmax(120px,_1fr)] sm:auto-cols-[minmax(220px,_1fr)] gap-5 overflow-x-auto no-scrollbar scroll-smooth">
+              {books?.map((book: any) => (
+                <Link href={`/book/${book?.title + "-" + book?._id}`} key={book._id}>
                   <div className="relative bg-gray-50 p-1 group hover:bg-gray-800 transition duration-300 ease-in-out">
                     <div className="relative">
-                      <div className="relative text-center w-full h-[150px] sm:h-[200px]">
+                      <div className="relative text-center w-full h-[150px] sm:h-[260px]">
                         <Image
-                          src="/bookcover.jfif"
-                          alt=""
+                          src={book.imageUrl}
+                          alt={book.title}
                           fill
                           // sizes=""
                           // objectFit="cover"
@@ -38,10 +44,10 @@ export default function Landing() {
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out text-white p-2">
                         <div className="space-y-3">
                           <h1 className="font-serif text-xl">
-                            The Picture of Dorian Gray
+                            {book.title}
                           </h1>
-                          <h2>Oscar Wilde</h2>
-                          <h2 className="italic">300 reviews</h2>
+                          <h2>{book.author}</h2>
+                          <h2 className="italic">{book.numberOfReviews} reviews</h2>
                         </div>
                       </div>
                     </div>
@@ -80,7 +86,7 @@ export default function Landing() {
                 <hr />
                 <div className="space-y-3">
                   <h2>
-                    "The most amazing book I have read this year!"{" "}
+                  &quot;The most amazing book I have read this year!&quot;
                     <i>- Anonymous reviewer</i>
                   </h2>
                   <div className="flex justify-between items-center">
@@ -100,7 +106,7 @@ export default function Landing() {
                 <hr />
                 <div className="space-y-3">
                   <h2>
-                    "The most amazing book I have read this year!"{" "}
+                  &quot;The most amazing book I have read this year!&quot;
                     <i>- Anonymous reviewer</i>
                   </h2>
                   <div className="flex justify-between items-center">
@@ -125,7 +131,7 @@ export default function Landing() {
             </div>
           </div>
         </div>
-        <div className="md:w-[28%] lg:w-[25%] p-5 space-y-16">
+        {/* <div className="md:w-[28%] lg:w-[25%] p-5 space-y-16">
           <div className="border border-gray-300 p-5 rounded-lg bg-white">
             <div className="flex space-x-2 items-center">
               <FaTags className="size-7" />
@@ -158,7 +164,7 @@ export default function Landing() {
               </ol>
             </div>
           </div>
-        </div>
+        </div> */}
       </main>
     </>
   );
