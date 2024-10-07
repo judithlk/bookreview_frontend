@@ -5,7 +5,10 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
+      let token = "";
+        if (typeof window !== "undefined") {
+          token = localStorage.getItem("token") || "";
+        }
 
       headers.set("Authorization", `Bearer ${token}`);
     },
@@ -25,7 +28,13 @@ export const userApi = createApi({
         method: `GET`,
       }),
     }),
+    deleteUser: builder.query({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: `DELETE`,
+      }),
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useGetUserByIdQuery } = userApi;
+export const { useGetUsersQuery, useGetUserByIdQuery, useDeleteUserQuery } = userApi;

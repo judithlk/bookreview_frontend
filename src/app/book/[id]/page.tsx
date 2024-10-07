@@ -126,9 +126,9 @@ export default function Book(
               <p>{bookData?.synopsis}</p>
             </div>
 
+              <h1 className="mb-3 text-xl font-semibold">Reviews</h1>
             <ScrollArea className="h-[300px] w-full border p-3 rounded-sm">
-              <h1 className="mb-3">Reviews</h1>
-              <hr />
+              
               {!bookReviews ? (
                 <div className="sm:flex sm:space-x-1 justify-center my-2">
                   <h1 className="">No reviews yet. </h1>
@@ -144,7 +144,7 @@ export default function Book(
                   <div className="flex justify-between">
                     <div>
                       <h2>{review?.username}</h2>
-                      <h2 className="italic">
+                      <h2 className="italic text-gray-500">
                         {review?.createdAt
                           ? moment(review.createdAt).format("DD MMM YYYY")
                           : "No date"}

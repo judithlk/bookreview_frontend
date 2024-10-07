@@ -19,6 +19,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 
 import { useLoginMutation } from "@/redux/services/auth.service";
 import { useDispatch } from "react-redux";
@@ -50,6 +52,8 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState<any>(false);
   const [login, loginState] = useLoginMutation();
 
+  const {toast} = useToast();
+
   async function onSubmit(values: z.infer<typeof formSchema>, e:any) {
     e.preventDefault();
     setIsLoading(true);
@@ -61,17 +65,18 @@ export default function Login() {
             token: result.data.accessToken,
           })
         );     
-        // toast({
-        //   title: "Success",
-        //   description: "Successfully logged in",
-        // })
+        toast({
+          title: "Success",
+          description: "Successfully logged in",
+        })
         router.push('/')
-    } catch (error) {
-      // toast({
-      //   title: "Error",
-      //   description: "Failed to log in",
-      // })
-      console.log(error);
+    } catch (error: any) {
+      console.log(result.error.data.error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error.data.error,
+      })
     }
     setIsLoading(false);
   }
@@ -110,7 +115,7 @@ export default function Login() {
                 )}
               />
               <div className="flex justify-end">
-              {isLoading ? <Button type="submit" disabled><MoonLoader size={22} /></Button> : <Button type="submit">Login</Button>}
+              {isLoading ? <Button type="submit" disabled><MoonLoader size={22} color="#fff" /></Button> : <Button type="submit">Login</Button>}
               </div>
             </form>
           </Form>
@@ -119,6 +124,7 @@ export default function Login() {
         </div>
 
       </div>
+      <Toaster />
     </>
   );
 }

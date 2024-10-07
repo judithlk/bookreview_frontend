@@ -56,7 +56,7 @@ export default function Signup() {
     <>
       <div className="relative h-[90vh] flex items-center justify-center">
         <div className=" sm:w-[50%] lg:w-[35%] xl:w-[30%] bg-white p-5 flex items-center justify-center">
-          <div className="space-y-5 w-[95%] p-8 bg-[#5D8AA8] sm:bg-transparent rounded-xl">
+          <div className="space-y-5 w-[95%] p-8 bg-transparent rounded-xl">
             <h2 className="text-2xl">Sign Up to Rivu</h2>
             <Form {...form}>
               <form

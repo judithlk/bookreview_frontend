@@ -16,16 +16,21 @@ export default function Navbar() {
   const hideNavbar = pathname.startsWith("/signin");
 
   // const user: any = localStorage.getItem("userInfo");
-  const [user, setUser] = useState<any>(null);
-  const [token, setToken] = useState<any>(null);
+  let user = "";
+  let token = "";
+  if (typeof window !== "undefined") {
+    user = localStorage.getItem("userInfo");
+    token = localStorage.getItem("token");
+  }
+  // const [user, setUser] = useState<any>(null);
+  // const [token, setToken] = useState<any>(null);
   
-  useEffect(() => {
-    const data = typeof window !== "undefined" ? localStorage.getItem("userInfo") : false;
-    const dataToken = typeof window !== "undefined" ? localStorage.getItem("token") : false;
-    setUser(data);
-    setToken(dataToken);
-    console.log(user)
-  }, [])
+  // useEffect(() => {
+  //   const data = typeof window !== "undefined" ? localStorage.getItem("userInfo") : false;
+  //   const dataToken = typeof window !== "undefined" ? localStorage.getItem("token") : false;
+  //   setUser(data);
+  //   setToken(dataToken);
+  // }, [user])
   
   const userJs: any = JSON.parse(user);
 

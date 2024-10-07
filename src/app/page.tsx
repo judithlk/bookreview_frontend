@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useGetBooksQuery } from "@/redux/services/books.service";
 import { useGetReviewsByBookQuery } from "@/redux/services/reviews.service";
 
+
 import { FaTags, FaRegClock } from "react-icons/fa6";
 import { FaFire } from "react-icons/fa";
 import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
@@ -18,7 +19,7 @@ export default function Landing() {
 
   return (
     <>
-      <main className="relative flex w-[90%] m-auto justify-between p-5 px-8">
+      <main className="relative flex sm:w-[90%] m-auto justify-between p-5 px-0 sm:px-8">
         <div className="space-y-12 p-5 md:px-8 w-full">
           <div className="space-y-4 w-full overflow-hidden p-5 hover:bg-gray-300 hover:bg-opacity-25">
             <div className="flex space-x-2 items-center p-2 rounded-sm">
@@ -62,8 +63,8 @@ export default function Landing() {
               <FaRegClock className="size-8 fill-white" />
               <h1 className="text-[1.6rem] text-white">Latest Reviews</h1>
             </div>
-            <div className="md:flex justify-between bg-gray-100 p-6 md:p-4 space-y-5">
-              <div className="w-[65%] md:w-[25%]">
+            <div className="md:flex justify-between bg-gray-100 p-6 md:p-10 space-y-5">
+              <div className="w-[65%] md:w-[20%]">
                 <div className="relative text-center w-full h-[180px] sm:h-[250px]">
                   <Image
                     src="/bookcover.jfif"
@@ -76,7 +77,7 @@ export default function Landing() {
                   />
                 </div>
               </div>
-              <div className="md:w-[70%] space-y-4">
+              <div className="md:w-[70%] space-y-3">
                 <div>
                   <h1 className="font-serif text-xl font-semibold">
                     Dorian Gray
@@ -124,7 +125,7 @@ export default function Landing() {
                   </div>
                 </div>
                 <hr />
-                <Link href="#">
+                <Link href="#" className="block">
                   <h2>More reviews</h2>
                 </Link>
               </div>

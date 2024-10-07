@@ -13,22 +13,35 @@ import {
   // AlertDialogTitle,
   // AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 
 import withAuth from "@/components/auth/withAuth";
 
-import { useGetUserByIdQuery } from "@/redux/services/users.service";
+import { useGetUserByIdQuery, useDeleteUserQuery } from "@/redux/services/users.service";
+// import { useGetReviewsByUserQuery } from "@/redux/services/reviews.service";
 
 import { MdOutlineClose } from "react-icons/md";
 
 import moment from "moment";
 
 function MyProfile() {
-  const user: any = localStorage.getItem("userInfo");
+  let user = "";
+  let token = "";
+  if (typeof window !== "undefined") {
+    user = localStorage.getItem("userInfo");
+    token = localStorage.getItem("token");
+  }
+
+
   const userJs: any = JSON.parse(user);
 
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const {data: userData} = useGetUserByIdQuery(userJs._id);
+  const { data: userData } = useGetUserByIdQuery(userJs._id);
+  // const {data: userReviews} = useGetReviewsByUserQuery(userJs._id);
+
+  const {toast} = useToast();
 
   function logOut() {
     localStorage.clear();
@@ -37,6 +50,19 @@ function MyProfile() {
     //   description: "Successfully logged out",
     // });
     router.push("/");
+  }
+
+  async function handleDelete(id: string) {
+    try{
+      await useDeleteUserQuery(userJs._id);
+      localStorage.clear();
+      router.push("/");
+    } catch(error: any) {
+      toast({
+        title: "Error",
+        description: error || error.msg
+      })
+    }
   }
 
   return (
@@ -102,44 +128,86 @@ function MyProfile() {
 
       <main className="relative md:w-[80%] m-auto p-5 px-8 bg-white">
         <div className="flex justify-between items-center py-5">
-          <h1 className="text-xl">Welcome, khaleesi</h1>
-          <Button variant="ghost" onClick={() => logOut()}>Logout</Button>
+          <h1 className="text-[1.1rem] md:text-xl">
+            Welcome, {userData?.username}
+          </h1>
+          <Button variant="ghost" onClick={() => logOut()}>
+            Logout
+          </Button>
         </div>
         <div className="bg-gray-100 rounded-md p-4 px-2 space-y-6">
-          <div className="relative rounded-full border-4 border-[#FFD700] text-center w-[100px] md:w-[200px] h-[100px] md:h-[200px]">
+          <div className="relative rounded-full border-4 text-center w-[100px] md:w-[200px] h-[100px] md:h-[200px]">
             <Image
-              src="/bookcover.jfif"
-              alt=""
-              layout="fill"
-              sizes=""
-              objectFit="cover"
-              className="rounded-full m-auto"
+              src={userData?.imageUrl}
+              alt="User profile photo"
+              fill
+              className="rounded-full m-auto object-cover"
             />
           </div>
-          <div className="md:flex justify-between">
+          <div className="space-y-4 md:space-y-0 md:flex justify-between">
             <div className="space-y-3">
-              <h1 className="text-sm sm:text-base">Email address: {userData?.email}</h1>
-              <h1>Active since: {moment(userData?.createdAt).format("DD MMM, YYYY")}</h1>
-              <h1>Number of Reviews: {userData?.numberOfReviews}</h1>
+              <h1 className="text-sm sm:text-base">
+                Email address: {userData?.email}
+              </h1>
+              <h1 className="text-sm sm:text-base">
+                Active since:{" "}
+                {moment(userData?.createdAt).format("DD MMM, YYYY")}
+              </h1>
+              <h1 className="text-sm sm:text-base">
+                Number of Reviews: {userData?.numberOfReviews}
+              </h1>
             </div>
-            <div>
-            <Button variant="ghost" className="text-blue-700 underline">
-              Update Profile
-            </Button>
-            <Button variant="ghost" className="text-red-700 underline">
-              Delete Profile
-            </Button>
+            <div className="justify-between">
+              <Button variant="ghost" className="text-blue-700 underline">
+                Update Profile
+              </Button>
+              <Button variant="ghost" className="text-red-700 underline" onClick={() => {
+                toast({
+                  variant: "destructive",
+                  title: "Warning!",
+                  description: "You are about to delete your account. NOTE: This action is irreversible!",
+                  action: <Button onClick={() => handleDelete} className="bg-transparent border">Delete</Button>
+                })
+              }}>
+                Delete Profile
+              </Button>
             </div>
           </div>
-          <div>
+          {/* <div>
             <h2 className="font-semibold text-xl">My reviews</h2>
+              {userReviews?.map((review: any) => (
+                <div className="my-2 border-b pb-3" key={review._id}>
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="italic">
+                      {review?.createdAt
+                        ? moment(review.createdAt).format("DD MMM YYYY")
+                        : "No date"}
+                    </h2>
+                  </div>
+                 
+                </div>
+
+                <p>{review?.body}</p>
+
+              </div>
+              ))}
             <div className="flex space-x-1 items-center">
+
               <p>No reviews yet.</p>
-              <Button variant="ghost" className="text-blue-700 underline" onClick={() => setIsOpen(true)}>Add a review</Button>
+              <Button
+                variant="ghost"
+                className="text-blue-700 underline"
+                onClick={() => setIsOpen(true)}
+              >
+                Add a review
+              </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
+
+      <Toaster />
     </>
   );
 }

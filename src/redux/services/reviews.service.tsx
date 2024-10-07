@@ -4,39 +4,18 @@ export const reviewApi = createApi({
   reducerPath: "reviewApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-    // prepareHeaders: (headers) => {
-    //     let token = localStorage.getItem("token");
-
-    //   const userString = localStorage.getItem("userInfo");
-    //   let tenantId = "";
-
-    //   if (userString) {
-    //     try {
-    //       const userObject = JSON.parse(userString);
-    //       tenantId = userObject.tenantId || "";
-    //     } catch (error: any) {
-    //       console.error("Error parsing user object:", error);
-    //     }
-    //   }
-
-    //   if (token) {
-    //     headers.set('Authorization', `Bearer ${token}`);
-    //   }
-
-    //   headers.set("x-tenant-id", tenantId);
-    // },
   }),
   tagTypes: ["Review"],
   endpoints: (builder) => ({
-    addReview: builder.mutation<any, any>({
-      query: (body) => ({
-        url: `/reviews`,
-        method: `POST`,
-        body: {
-          userId: body.userId, username: body.username, book: body.book, body: body.body
-        },
-      }),
-    }),
+    // addReview: builder.mutation<any, any>({
+    //   query: (body) => ({
+    //     url: `/reviews`,
+    //     method: `POST`,
+    //     body: {
+    //       userId: body.userId, username: body.username, book: body.book, body: body.body
+    //     },
+    //   }),
+    // }),
     getReviews: builder.query<any, void>({
       query: () => ({
         url: `/reviews`,
@@ -51,10 +30,22 @@ export const reviewApi = createApi({
       }),
     }),
     getReviewsByUser: builder.query({
-      query: (userId) => ({
-        url: `/reviews/user/${userId}`,
-        method: `GET`,
-      }),
+      query: (userId) => {
+        let token = "";
+        if (typeof window !== "undefined") {
+          token = localStorage.getItem("token") || "";
+        }
+
+        return {
+          url: `/reviews/user/${userId}`,
+          method: `GET`,
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+              }
+            : undefined,
+        };
+      },
     }),
 
     deleteReview: builder.mutation<any, any>({
@@ -70,7 +61,7 @@ export const reviewApi = createApi({
 export const {
   useAddReviewMutation,
   useGetReviewsQuery,
-  useLazyGetReviewsByUserQuery,
+  useGetReviewsByUserQuery,
   useGetReviewsByBookQuery,
   useDeleteReviewMutation,
 } = reviewApi;
