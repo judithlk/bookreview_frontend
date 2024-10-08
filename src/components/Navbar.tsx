@@ -15,24 +15,25 @@ export default function Navbar() {
   const pathname = usePathname();
   const hideNavbar = pathname.startsWith("/signin");
 
-  // const user: any = localStorage.getItem("userInfo");
-  let user = "";
-  let token = "";
-  if (typeof window !== "undefined") {
-    user = localStorage.getItem("userInfo");
-    token = localStorage.getItem("token");
-  }
-  // const [user, setUser] = useState<any>(null);
-  // const [token, setToken] = useState<any>(null);
-  
-  // useEffect(() => {
-  //   const data = typeof window !== "undefined" ? localStorage.getItem("userInfo") : false;
-  //   const dataToken = typeof window !== "undefined" ? localStorage.getItem("token") : false;
-  //   setUser(data);
-  //   setToken(dataToken);
-  // }, [user])
-  
-  const userJs: any = JSON.parse(user);
+  const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useState<any>(null);
+  const [userJs, setUserJs] = useState<any>(null); // Added userJs state
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userInfo = localStorage.getItem("userInfo");
+      const userToken = localStorage.getItem("token");
+
+      if (userInfo) {
+        const parsedUser = JSON.parse(userInfo);
+        setUser(parsedUser);
+        setUserJs(parsedUser); // Set userJs after parsing
+      }
+
+      setToken(userToken);
+    }
+  }, []);
+
 
   return (
     <div className={`${hideNavbar ? "hidden" : "block"} bg-[#5D8AA8]`}>

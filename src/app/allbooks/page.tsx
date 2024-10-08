@@ -33,18 +33,23 @@ export default function AllBooks() {
     "bg-orange-200",
     "bg-pink-200",
     "bg-purple-200",
+    "bg-cyan-200",
+    "bg-red-200",
+    "bg-gray-200",
+    "bg-amber-300",
+    "bg-lime-300",
   ];
 
   return (
     <>
-      <main className="relative w-[98%] sm:w-[95%] m-auto space-y-8 p-5 px-2 sm:px-8 bg-white">
+      <main className="relative w-[98%] sm:w-[95%] m-auto space-y-8 p-5 bg- px-2 sm:px-8 bg-white">
         <div className="flex flex-wrap items-center">
           <h1 className="m-1">Genres</h1>
           {genres?.map((genre: any, x: number = 0) => (
             <div
               className={`${
                 colors[x++]
-              } px-2 rounded-3xl m-1 capitalize flex space-x-1 items-center`}
+              } px-2 rounded-3xl m-1 capitalize flex space-x-1 items-center cursor-pointer`}
               key={genre._id}
               onClick={() => 
                 genreId === genre._id ? setGenreId(null) : setGenreId(genre._id)
@@ -79,7 +84,7 @@ export default function AllBooks() {
                 key={book?._id}
               >
                 <div className="relative">
-                  <div className="relative text-center w-full h-[120px] sm:h-[200px] lg:h-[240px]">
+                  <div className="relative text-center w-full h-[140px] sm:h-[200px] lg:h-[250px]">
                     <Image
                       src={book?.imageUrl}
                       alt={book?.title}

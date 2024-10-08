@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,10 @@ import { useToast } from "@/hooks/use-toast";
 
 import withAuth from "@/components/auth/withAuth";
 
-import { useGetUserByIdQuery, useDeleteUserQuery } from "@/redux/services/users.service";
+import {
+  useGetUserByIdQuery,
+  useDeleteUserMutation,
+} from "@/redux/services/users.service";
 // import { useGetReviewsByUserQuery } from "@/redux/services/reviews.service";
 
 import { MdOutlineClose } from "react-icons/md";
@@ -26,43 +29,48 @@ import { MdOutlineClose } from "react-icons/md";
 import moment from "moment";
 
 function MyProfile() {
-  let user = "";
-  let token = "";
-  if (typeof window !== "undefined") {
-    user = localStorage.getItem("userInfo");
-    token = localStorage.getItem("token");
-  }
-
-
-  const userJs: any = JSON.parse(user);
-
+  const [userJs, setUserJs] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const { data: userData } = useGetUserByIdQuery(userJs._id);
-  // const {data: userReviews} = useGetReviewsByUserQuery(userJs._id);
+  const { toast } = useToast();
 
-  const {toast} = useToast();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("userInfo");
+      const token = localStorage.getItem("token");
+
+      if (user) {
+        setUserJs(JSON.parse(user)); // Set the user data to state
+      }
+      setLoading(false); // Set loading to false after fetching the data
+    }
+  }, []);
+
+  const { data: userData } = useGetUserByIdQuery(userJs?._id);
+  const [deleteUser] = useDeleteUserMutation();
 
   function logOut() {
     localStorage.clear();
-    // toast({
-    //   title: "Success",
-    //   description: "Successfully logged out",
-    // });
     router.push("/");
   }
 
-  async function handleDelete(id: string) {
-    try{
-      await useDeleteUserQuery(userJs._id);
+  async function handleDelete() {
+    try {
+      await deleteUser(userJs._id);
       localStorage.clear();
       router.push("/");
-    } catch(error: any) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error || error.msg
-      })
+        description: error || error.message,
+      });
     }
+  }
+
+  // Show a loading state until `localStorage` data is loaded
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -161,14 +169,26 @@ function MyProfile() {
               <Button variant="ghost" className="text-blue-700 underline">
                 Update Profile
               </Button>
-              <Button variant="ghost" className="text-red-700 underline" onClick={() => {
-                toast({
-                  variant: "destructive",
-                  title: "Warning!",
-                  description: "You are about to delete your account. NOTE: This action is irreversible!",
-                  action: <Button onClick={() => handleDelete} className="bg-transparent border">Delete</Button>
-                })
-              }}>
+              <Button
+                variant="ghost"
+                className="text-red-700 underline"
+                onClick={() => {
+                  toast({
+                    variant: "destructive",
+                    title: "Warning!",
+                    description:
+                      "You are about to delete your account. NOTE: This action is irreversible!",
+                    action: (
+                      <Button
+                        onClick={() => handleDelete}
+                        className="bg-transparent border"
+                      >
+                        Delete
+                      </Button>
+                    ),
+                  });
+                }}
+              >
                 Delete Profile
               </Button>
             </div>

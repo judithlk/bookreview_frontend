@@ -2,7 +2,7 @@
 
 import React from "react";
 // import { useState } from "react";
-// import Link from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -23,13 +23,14 @@ import {
 // import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-// import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 
 import { useGetBookByIdQuery } from "@/redux/services/books.service";
 import { useGetReviewsByBookQuery } from "@/redux/services/reviews.service";
 import addReview from "@/api/addReview";
 
-import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
+import { FaRegHeart } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
 
 import moment from "moment";
@@ -40,19 +41,13 @@ const formSchema = z.object({
   }),
 });
 
-export default function Book(
-  // { params }: { params: { id: string } }
-) {
-  //   const [isOpen, setIsOpen] = useState(false);
+export default function Book() {
   const pathname = usePathname();
-  //   const searchParams = useSearchParams()
+  const {toast} = useToast();
 
   const id = pathname.split("-").pop();
   const { data: bookData } = useGetBookByIdQuery(id);
   const { data: bookReviews, refetch } = useGetReviewsByBookQuery(id);
-
-  // const user: any = localStorage.getItem("userInfo");
-  // const userJs: any =JSON.parse(user);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,7 +57,7 @@ export default function Book(
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // console.log(values);
+    
     try {
       const load = {
         book: id,
@@ -70,38 +65,24 @@ export default function Book(
       };
       const result: any[] = await addReview(load);
       refetch();
-      console.log(result);
-      // setIsOpen(false);
-      // toast({
-      //   title: "Success",
-      //   description: "Successfully updated product",
-      // });
+
+      toast({
+        title: "Success",
+        description: "Successfully added review",
+      });
     } catch (error: any) {
-      console.log(error);
-      // toast({
-      //   title: "Error",
-      //   description: "Failed to update product",
-      // });
+      // console.log(error.status)
+      if(error.status == "401") {
+
+        toast({
+          title: "Failed to add review",
+          description: "Create an account first",
+          action: <Link href="/signin/new-user" className="font-semibold hover:text-blue-800">Go</Link>
+        });
+      }
     }
   }
 
-  //   const handleDelete = async () => {
-  //     try {
-  //       await deleteProduct(id)
-  //       console.log("done")
-  //       toast({
-  //         title: "Success",
-  //         description: "Successfully deleted",
-  //       })
-  //       router.replace('/dashboard/products')
-  //     } catch (error: any) {
-  //         console.log(error);
-  //         toast({
-  //             title: "Error",
-  //             description: "Failed to delete",
-  //           })
-  //     }
-  //   };
   return (
     <>
       <main className="relative w-[95%] md:w-[70%] m-auto p-5 px-8 bg-white">
@@ -121,14 +102,15 @@ export default function Book(
               <h1 className="text-2xl font-semibold capitalize">
                 {bookData?.title}
               </h1>
-              <h2>{bookData?.author}</h2>
-              <h3>Synopsis</h3>
+              <h2>
+                {bookData?.author}, {bookData?.year}
+              </h2>
+              <h3 className="mb-3 text-xl font-semibold">Synopsis</h3>
               <p>{bookData?.synopsis}</p>
             </div>
 
-              <h1 className="mb-3 text-xl font-semibold">Reviews</h1>
+            <h1 className="mb-3 text-xl font-semibold">Reviews</h1>
             <ScrollArea className="h-[300px] w-full border p-3 rounded-sm">
-              
               {!bookReviews ? (
                 <div className="sm:flex sm:space-x-1 justify-center my-2">
                   <h1 className="">No reviews yet. </h1>
@@ -143,7 +125,7 @@ export default function Book(
                 <div className="my-2 border-b pb-3" key={review._id}>
                   <div className="flex justify-between">
                     <div>
-                      <h2>{review?.username}</h2>
+                      <h2 className="font-semibold">@{review?.username}</h2>
                       <h2 className="italic text-gray-500">
                         {review?.createdAt
                           ? moment(review.createdAt).format("DD MMM YYYY")
@@ -151,19 +133,14 @@ export default function Book(
                       </h2>
                     </div>
                     <div className="flex space-x-3 items-center">
-                      <Button variant="ghost" className="w-fit p-1">
-                        <BiSolidUpvote className="size-6 fill-green-300 hover:fill-green-600 cursor-pointer" />
-                        {review.upvotes}
-                      </Button>
-                      <Button variant="ghost" className="w-fit p-1">
-                        <BiSolidDownvote className="size-6 fill-red-300 hover:fill-red-600 cursor-pointer" />
-                        {review.downvotes}
+                      <Button variant="ghost" className="w-fit p-1 space-x-2">
+                        <FaRegHeart className="size-6 fill-red-300 hover:fill-red-600 cursor-pointer" />
+                        <h1>{review?.upvotes}</h1>
                       </Button>
                     </div>
                   </div>
 
                   <p>{review?.body}</p>
-
                 </div>
               ))}
               <div>
@@ -200,6 +177,7 @@ export default function Book(
           </div>
         </div>
       </main>
+      <Toaster />
     </>
   );
 }

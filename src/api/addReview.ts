@@ -25,13 +25,9 @@ export default async function addReview(reviewInfo: any) {
         });
 
         // Handle success
-        console.log("Review added successfully", response.data);
+        // console.log("Review added successfully", response.data);
         return response.data;
       } catch (error: any) {
-        console.error(
-          "Failed to add review:",
-          error.response ? error.response.data : error.message
-        );
         throw error;
       }
     } else {

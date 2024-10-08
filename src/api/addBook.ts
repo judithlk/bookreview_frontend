@@ -28,13 +28,10 @@ export default async function addBook(bookInfo: any) {
         });
 
         // Handle success
-        console.log("Book added successfully", response.data);
+        // console.log("Book added successfully", response.data);
         return response.data;
       } catch (error: any) {
-        console.error(
-          "Failed to add book:",
-          error.response ? error.response.data : error.message
-        );
+       
         throw error;
       }
     } else {

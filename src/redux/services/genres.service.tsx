@@ -4,27 +4,7 @@ export const genreApi = createApi({
   reducerPath: "genreApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-    // prepareHeaders: (headers) => {
-    //     let token = localStorage.getItem("token");
-
-    //   const userString = localStorage.getItem("userInfo");
-    //   let tenantId = "";
-
-    //   if (userString) {
-    //     try {
-    //       const userObject = JSON.parse(userString);
-    //       tenantId = userObject.tenantId || "";
-    //     } catch (error: any) {
-    //       console.error("Error parsing user object:", error);
-    //     }
-    //   }
-
-    //   if (token) {
-    //     headers.set('Authorization', `Bearer ${token}`);
-    //   }
-
-    //   headers.set("x-tenant-id", tenantId);
-    // },
+    
   }),
   tagTypes: ["Genre"],
   endpoints: (builder) => ({

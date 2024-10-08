@@ -168,7 +168,8 @@ export default function SubNavbar() {
           <ScrollArea className="h-[250px] w-full p-1 border-none">
             {isLoading ? <div className="w-full flex justify-center mt-4"><MoonLoader size={24} /></div> : <></>}
             {results?.data?.map((result: any) => (
-              <div className="flex my-3" key={result._id}>
+              <Link href={`/book/${result?.title + "-" + result?._id}`} key={result._id} className="block">
+              <div className="flex my-3 bg-gray-100 hover:shadow-md cursor-pointer p-2" >
                 <div className="relative w-[30%] md:w-[20%] h-[120px]">
                   <Image
                     src={result.imageUrl}
@@ -183,6 +184,7 @@ export default function SubNavbar() {
                   <h2>{result.year}</h2>
                 </div>
               </div>
+              </Link>
             ))}
           </ScrollArea>
         </AlertDialogContent>
